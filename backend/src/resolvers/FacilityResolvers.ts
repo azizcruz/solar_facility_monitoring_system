@@ -17,6 +17,40 @@ const facilityResolvers = {
     myFacilities: async (_, _args, context): Promise<FacilityDocument[]> => {
       return Facility.find({ user: context.userId });
     },
+    facility: async (
+      _,
+      { id },
+      context
+    ): Promise<FacilityDocument | ResponseMessage> => {
+      const facility = await Facility.findById(id);
+
+      if (!facility.user || facility.user.toString() !== context.userId) {
+        throw new GraphQLError(FORBIDDEN, {
+          extensions: {
+            code: FORBIDDEN,
+            http: { status: 403 },
+          },
+        });
+      }
+
+      if (!facility) {
+        throw new GraphQLError(NOT_FOUND, {
+          extensions: {
+            code: NOT_FOUND,
+            http: { status: 404 },
+          },
+        });
+      }
+      if (facility.user.toString() !== context.userId) {
+        throw new GraphQLError(FORBIDDEN, {
+          extensions: {
+            code: FORBIDDEN,
+            http: { status: 403 },
+          },
+        });
+      }
+      return facility;
+    },
   },
 
   Facility: {

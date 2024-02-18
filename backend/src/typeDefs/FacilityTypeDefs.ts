@@ -35,6 +35,7 @@ const facilityTypeDefs = gql`
 
   type Query {
     myFacilities: [Facility!]
+    facility(id: ID!): Facility
   }
 
   type Mutation {
