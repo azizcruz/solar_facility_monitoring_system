@@ -2,9 +2,13 @@ import { GraphQLError } from "graphql";
 import jwt from "jsonwebtoken";
 import { UNAUTHENTICATED } from "../constants/statusMessages.js";
 
-export const getUser = (auth: string) => {
+interface AuthSession {
+  userId: string;
+}
+
+export const getUser = (auth: string): AuthSession => {
   if (!auth) {
-    return {};
+    return null;
   }
 
   const parts: string[] = auth.split(" ");
@@ -52,7 +56,7 @@ export const getUser = (auth: string) => {
 
   // check if expired or invalid and return false
   if (decoded.exp < Date.now() / 1000 || !decoded) {
-    return false;
+    return null;
   }
 
   return { userId: decoded.userId };

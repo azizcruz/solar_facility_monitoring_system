@@ -8,9 +8,9 @@ interface Context extends GraphQLServerContext {
 }
 
 export function checkAuthToken() {
-  return async (req, res, next) => {
-    const authHeader = req.headers.authorization || "";
-    const token = authHeader.split(" ")[1];
+  return async (req, _res, next) => {
+    const authHeader: string = req.headers.authorization || "";
+    const token: string = authHeader.split(" ")[1];
     if (token) {
       try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);

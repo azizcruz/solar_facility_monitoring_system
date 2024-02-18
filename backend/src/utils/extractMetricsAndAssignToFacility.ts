@@ -1,4 +1,3 @@
-import fs from "fs";
 import csv from "csv-parser";
 import { PvMetric, PvMetricsDocument } from "../models/pvmetrics.js";
 
@@ -40,14 +39,4 @@ export async function extractMetricsAndAssignToFacility(
         reject(error);
       });
   });
-}
-
-function parseCSVData(data: CSVData): PvMetricsDocument {
-  const pvMetrics: PvMetricsDocument = new PvMetric({
-    activePowerKW: Number(data.activePowerKW),
-    energyKWh: Number(data.energyKWh),
-    facility: data.facility,
-    timestamp: data.timestamp,
-  });
-  return pvMetrics;
 }
