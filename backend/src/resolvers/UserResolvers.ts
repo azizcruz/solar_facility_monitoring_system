@@ -9,6 +9,7 @@ import {
 } from "../constants/statusMessages.js";
 import { generateToken } from "../utils/generateToken.js";
 import dotenv from "dotenv";
+import { Facility } from "../models/facility.js";
 
 dotenv.config();
 
@@ -51,6 +52,12 @@ const userResolvers = {
     userLogout: async (_, _args, context) => {
       context.user = null;
       return { message: "User logged out successfully" };
+    },
+  },
+
+  User: {
+    facilities: async (parent: UserDocument) => {
+      return Facility.find({ user: parent._id });
     },
   },
 

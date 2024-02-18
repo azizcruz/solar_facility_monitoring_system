@@ -1,6 +1,8 @@
 import gql from "graphql-tag";
 
 const facilityTypeDefs = gql`
+  scalar Upload
+
   type Facility {
     _id: ID!
     name: String!
@@ -8,7 +10,14 @@ const facilityTypeDefs = gql`
     longitude: Float!
     createdAt: String!
     updatedAt: String!
-    user: String
+    user: String!
+    pv_metrics: [PVMetric]
+  }
+
+  type File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
   }
 
   input CreateFacilityInput {
@@ -31,6 +40,7 @@ const facilityTypeDefs = gql`
   type Mutation {
     updateFacility(input: UpdateFacilityInput!): Facility
     createFacility(input: CreateFacilityInput!): Facility
+    uploadPVMetricsToFacility(upload: Upload, facilityId: ID!): Facility
     deleteFacility(id: ID!): ResponseMessage
   }
 `;

@@ -28,7 +28,7 @@ const pvmetricsSchema = new Schema({
   },
 });
 
-export const PvMetrics = mongoose.model<PvMetricsDocument>(
+export const PvMetric = mongoose.model<PvMetricsDocument>(
   "PvMetric",
-  pvmetricsSchema,
+  pvmetricsSchema
 );

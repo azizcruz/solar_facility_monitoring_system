@@ -7,14 +7,23 @@ import {
   FORBIDDEN,
   NOT_FOUND,
 } from "../constants/statusMessages.js";
-import { Document } from "mongoose";
 import { User, UserDocument } from "../models/user.js";
 import { z } from "zod";
+import { extractMetricsAndAssignToFacility } from "../utils/extractMetricsAndAssignToFacility.js";
+import { PvMetric, PvMetricsDocument } from "../models/pvmetrics.js";
 
 const facilityResolvers = {
   Query: {
     myFacilities: async (_, _args, context): Promise<FacilityDocument[]> => {
       return Facility.find({ user: context.userId });
+    },
+  },
+
+  Facility: {
+    pv_metrics: async (
+      parent: FacilityDocument
+    ): Promise<PvMetricsDocument[]> => {
+      return PvMetric.find({ facility: parent._id.toString() });
     },
   },
 
@@ -120,6 +129,42 @@ const facilityResolvers = {
       }
       await facility.deleteOne();
       return { message: "Facility deleted successfully" };
+    },
+    uploadPVMetricsToFacility: async (
+      _,
+      { upload, facilityId },
+      context
+    ): Promise<FacilityDocument> => {
+      const fascility: FacilityDocument = await Facility.findOne({
+        _id: facilityId,
+      });
+
+      if (!fascility?.user || fascility?.user != context.userId) {
+        throw new GraphQLError(FORBIDDEN, {
+          extensions: {
+            code: FORBIDDEN,
+            http: { status: 403 },
+          },
+        });
+      }
+
+      const { file } = upload;
+      const { createReadStream } = file;
+
+      const stream = createReadStream();
+
+      extractMetricsAndAssignToFacility(stream, fascility._id)
+        .then((result: PvMetricsDocument[]) => {
+          fascility.pv_metrics = [
+            ...fascility.pv_metrics,
+            ...result.map((pvMetric) => pvMetric._id.toString()),
+          ];
+          fascility.save();
+          PvMetric.insertMany(result);
+        })
+        .catch((err) => console.log(err));
+
+      return fascility;
     },
   },
 };

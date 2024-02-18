@@ -30,16 +30,16 @@ const facilitySchema = new Schema(
     },
     pv_metrics: {
       type: [Schema.Types.ObjectId],
-      ref: "PvMetrics",
+      ref: "PvMetric",
       default: [],
     },
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 export const Facility = mongoose.model<FacilityDocument>(
   "Facility",
-  facilitySchema,
+  facilitySchema
 );
