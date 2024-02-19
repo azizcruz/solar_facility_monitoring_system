@@ -26,12 +26,12 @@ const userTypeDefs = gql`
 
   type Query {
     me: User
-    userLogout: ResponseMessage
-    userLogin(input: UserLoginInput!): Token
   }
 
   type Mutation {
     createUser(input: CreateUserInput!): Token
+    userLogout: ResponseMessage
+    userLogin(input: UserLoginInput!): Token
   }
 `;
 

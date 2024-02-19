@@ -18,6 +18,43 @@ const userResolvers = {
     me: async (_parent, _args, context) => {
       return User.findById(context?.userId);
     },
+  },
+
+  User: {
+    facilities: async (parent: UserDocument) => {
+      return Facility.find({ user: parent._id });
+    },
+  },
+
+  Mutation: {
+    createUser: async (_, args, _context): Promise<Token> => {
+      const createUserInputSchema = z.object({
+        email: z.string().email(),
+        password: z.string().min(3),
+      });
+
+      const { email, password } = createUserInputSchema.parse(args.input);
+
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        throw new GraphQLError(ALREADY_EXISTS, {
+          extensions: {
+            code: ALREADY_EXISTS,
+          },
+        });
+      }
+
+      const user = new User({
+        email,
+        password,
+      });
+
+      await user.save();
+
+      const token: string = generateToken(user._id);
+
+      return { token };
+    },
     userLogin: async (_, args, _context): Promise<Token> => {
       const userLoginInputSchema = z.object({
         email: z.string().email(),
@@ -52,44 +89,6 @@ const userResolvers = {
     userLogout: async (_, _args, context) => {
       context.user = null;
       return { message: "User logged out successfully" };
-    },
-  },
-
-  User: {
-    facilities: async (parent: UserDocument) => {
-      return Facility.find({ user: parent._id });
-    },
-  },
-
-  Mutation: {
-    createUser: async (_, args, _context): Promise<Token> => {
-      const createUserInputSchema = z.object({
-        email: z.string().email(),
-        password: z.string().min(3),
-      });
-
-      const { email, password } = createUserInputSchema.parse(args.input);
-
-      const existingUser = await User.findOne({ email });
-      if (existingUser) {
-        throw new GraphQLError(ALREADY_EXISTS, {
-          extensions: {
-            code: BAD_USER_INPUT,
-            http: { status: 400 },
-          },
-        });
-      }
-
-      const user = new User({
-        email,
-        password,
-      });
-
-      await user.save();
-
-      const token: string = generateToken(user._id);
-
-      return { token };
     },
   },
 };

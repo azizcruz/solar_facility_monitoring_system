@@ -7,10 +7,6 @@ interface AuthSession {
 }
 
 export const getUser = (auth: string): AuthSession => {
-  if (!auth) {
-    return null;
-  }
-
   const parts: string[] = auth.split(" ");
 
   if (parts.length !== 2) {

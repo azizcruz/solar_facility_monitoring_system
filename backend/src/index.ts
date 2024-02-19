@@ -28,8 +28,8 @@ await server.start();
 
 app.use(
   "/",
-  cors({
-    origin: "http://localhost:4000",
+  cors<cors.CorsRequest>({
+    origin: ["http://localhost:4000", "http://localhost:5173"],
     credentials: true,
   }),
   bodyParser.json(),
@@ -37,14 +37,16 @@ app.use(
   expressMiddleware(server, {
     context: async ({ req }) => {
       // @ts-ignore
-      const isUserLoginResolver = JSON.stringify(req.body).includes(
-        "userLogin"
-      );
-      if (isUserLoginResolver) {
+      const isAllowedResolvers =
+        JSON.stringify(req.body).includes("userLogin") ||
+        JSON.stringify(req.body).includes("createUser");
+
+      if (isAllowedResolvers) {
         return {};
       }
       const auth = req.headers?.authorization || "";
-      return getUser(auth);
+      const user = getUser(auth);
+      return user;
     },
   })
 );
