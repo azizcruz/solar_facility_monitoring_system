@@ -17,6 +17,8 @@ import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { Logout } from "@mui/icons-material";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/auth";
+import Logo from "../components/Logo";
+import { DialogContext } from "../context/dialog";
 
 const drawerWidth: number = 240;
 
@@ -60,7 +62,7 @@ const Drawer = styled(MuiDrawer, {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      width: theme.spacing(7),
+      width: theme.spacing(0),
       [theme.breakpoints.up("sm")]: {
         width: theme.spacing(9),
       },
@@ -73,6 +75,7 @@ const defaultTheme = createTheme();
 
 export default function Root() {
   const { logout } = useContext(AuthContext);
+  const { openConfirmDialog } = useContext(DialogContext);
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
@@ -126,13 +129,22 @@ export default function Root() {
             </IconButton>
           </Toolbar>
           <Divider />
+          {open && <Logo size={28} />}
+
           <List component="nav">
             {mainListItems}
             <Divider />
             <ListItemButton
               onClick={() => {
-                logout();
-                navigate("/", { replace: true });
+                openConfirmDialog(
+                  <Typography variant="h6">
+                    Are you sure you want to logout?
+                  </Typography>,
+                  () => {
+                    logout();
+                    navigate("/");
+                  }
+                );
               }}
             >
               <ListItemIcon>
@@ -141,7 +153,6 @@ export default function Root() {
               <ListItemText primary="Logout" />
             </ListItemButton>
           </List>
-          <Divider />
         </Drawer>
         <Box
           component="main"

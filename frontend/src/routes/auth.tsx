@@ -20,6 +20,7 @@ import { useContext, useEffect, useState } from "react";
 import { DialogContext } from "../context/dialog";
 import { CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { handleGraphQLError } from "../utils.ts/handleGraphQLError";
 
 type Form = {
   email: string;
@@ -142,8 +143,7 @@ function SignIn() {
       navigate("/dashboard", { replace: true });
     },
     onError: (error) => {
-      console.log(error);
-      openDialog(error.graphQLErrors[0].message);
+      openDialog(handleGraphQLError(error));
     },
   });
 
@@ -214,7 +214,7 @@ export default function Auth() {
 
   return (
     <>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" sx={{ pt: 1 }}>
         <Logo />
         <Box
           sx={{

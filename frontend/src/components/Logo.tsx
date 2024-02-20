@@ -1,21 +1,25 @@
 import { SolarPower } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
 
-export default function Logo() {
+export default function Logo({ size = 42 }: { size?: number }) {
   return (
     <>
       <Box
         sx={{
-          marginTop: 8,
+          padding: 8,
           display: "flex",
           placeContent: "center",
           placeItems: "center",
+          backgroundColor: "primary.main",
+          color: "white",
         }}
       >
-        <Typography component="h1" variant="h3">
+        <Typography
+          sx={{ fontSize: { xs: size / 2, sm: size / 1.5, lg: size } }}
+        >
           Ampereground
         </Typography>
-        <SolarPower sx={{ fontSize: 42, ml: 1 }} />
+        <SolarPower sx={{ fontSize: size, ml: 1 }} />
       </Box>
     </>
   );

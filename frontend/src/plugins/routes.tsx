@@ -3,8 +3,8 @@ import { Navigate, createBrowserRouter } from "react-router-dom";
 import Auth from "../routes/auth";
 import ErrorPage from "../routes/errorPage";
 import Root from "../routes/root";
-import Facilities from "../routes/facilities";
-import { ProtectedRoute } from "../routes/protectedRoute";
+import MyFacilities from "../routes/myFacilities";
+import { ProtectedRoute } from "../components/protectedRoute";
 
 export const routes = createBrowserRouter([
   {
@@ -24,7 +24,7 @@ export const routes = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Facilities />,
+        element: <MyFacilities />,
         errorElement: <ErrorPage />,
       },
     ],
