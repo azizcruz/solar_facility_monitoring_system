@@ -1,12 +1,19 @@
 import { useQuery } from "@apollo/client";
 import { MY_FACILITIES } from "../graphql/queries/facilities";
-import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
+import { Button, CircularProgress, Grid, Typography } from "@mui/material";
 import Facility from "../components/MyFacilities/Facility";
 import { Add } from "@mui/icons-material";
 import { DialogContext } from "../context/dialog";
 import { useContext } from "react";
-import CreateFacilityForm from "../components/MyFacilities/CreateFacilityForm";
+import CreateFacilityForm from "../components/MyFacilities/CreateEditFacilityForm";
 import { handleGraphQLError } from "../utils.ts/handleGraphQLError";
+
+export interface FacilityType {
+  _id: string;
+  name: string;
+  longitude: number;
+  latitude: number;
+}
 
 export default function MyFacilities() {
   const { openDialog } = useContext(DialogContext);
@@ -16,12 +23,29 @@ export default function MyFacilities() {
     },
   });
 
+  const facilities = data?.myFacilities.map((facility: FacilityType) => {
+    return (
+      <Grid item key={facility._id} xs={12} sm={6} md={4}>
+        <Facility key={facility._id} facility={facility} />
+      </Grid>
+    );
+  });
+
   if (loading) {
     return (
       <>
-        <Box sx={{ display: "flex", placeContent: "center" }}>
-          <CircularProgress />
-        </Box>
+        <Grid
+          container
+          alignItems={"center"}
+          spacing={2}
+          justifyContent={"center"}
+          direction={"column"}
+          height={"80vh"}
+        >
+          <Grid item>
+            <CircularProgress />
+          </Grid>
+        </Grid>
       </>
     );
   }
@@ -59,16 +83,21 @@ export default function MyFacilities() {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6} lg={4}>
-          <Facility
-            facility={{
-              name: "Facility 1",
-              latitude: 0,
-              longtitude: 0,
-              _id: "",
-            }}
-          />
-        </Grid>
+        {facilities}
+        <Button
+          variant="contained"
+          size="large"
+          onClick={() => {
+            openDialog(<CreateFacilityForm />);
+          }}
+          sx={{
+            position: "fixed",
+            bottom: 20,
+            right: 20,
+          }}
+        >
+          Add <Add />
+        </Button>
       </Grid>
     </>
   );

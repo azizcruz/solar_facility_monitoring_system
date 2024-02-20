@@ -56,7 +56,7 @@ function SignUp() {
       navigate("/dashboard", { replace: true });
     },
     onError: (error) => {
-      openDialog(error.graphQLErrors[0].message);
+      openDialog(handleGraphQLError(error));
     },
   });
 
