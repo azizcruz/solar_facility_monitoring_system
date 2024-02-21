@@ -65,21 +65,12 @@ const userResolvers = {
 
       const user = await User.findOne({ email });
       if (!user) {
-        throw new GraphQLError(NOT_FOUND, {
-          extensions: {
-            code: NOT_FOUND,
-            http: { status: 404 },
-          },
-        });
+        throw new GraphQLError(NOT_FOUND);
       }
+
       const isMatch = await user.comparePassword(password);
       if (!isMatch) {
-        throw new GraphQLError("Incorrect password or email", {
-          extensions: {
-            code: BAD_USER_INPUT,
-            http: { status: 400 },
-          },
-        });
+        throw new GraphQLError("Incorrect password or email");
       }
 
       const token = generateToken(user._id);

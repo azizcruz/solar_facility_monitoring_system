@@ -1,5 +1,6 @@
-export const BAD_USER_INPUT = "BAD_USER_INPUT";
+export const BAD_USER_INPUT = "BAD USER INPUT";
 export const NOT_FOUND = "NOT_FOUND";
 export const UNAUTHENTICATED = "UNAUTHENTICATED";
 export const FORBIDDEN = "FORBIDDEN";
-export const ALREADY_EXISTS = "ALREADY_EXISTS";
+export const ALREADY_EXISTS = "ALREADY EXISTS";
+export const INVALID_TOKEN = "INVALID TOKEN";

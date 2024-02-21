@@ -25,29 +25,14 @@ const facilityResolvers = {
       const facility = await Facility.findById(id);
 
       if (!facility.user || facility.user.toString() !== context.userId) {
-        throw new GraphQLError(FORBIDDEN, {
-          extensions: {
-            code: FORBIDDEN,
-            http: { status: 403 },
-          },
-        });
+        throw new GraphQLError(FORBIDDEN);
       }
 
       if (!facility) {
-        throw new GraphQLError(NOT_FOUND, {
-          extensions: {
-            code: NOT_FOUND,
-            http: { status: 404 },
-          },
-        });
+        throw new GraphQLError(NOT_FOUND);
       }
       if (facility.user.toString() !== context.userId) {
-        throw new GraphQLError(FORBIDDEN, {
-          extensions: {
-            code: FORBIDDEN,
-            http: { status: 403 },
-          },
-        });
+        throw new GraphQLError(FORBIDDEN);
       }
       return facility;
     },
@@ -182,7 +167,7 @@ const facilityResolvers = {
         });
       }
 
-      const { file } = upload;
+      const { file } = upload[0];
       const { createReadStream } = file;
 
       const stream = createReadStream();

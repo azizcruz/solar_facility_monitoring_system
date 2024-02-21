@@ -1,6 +1,6 @@
 import { GraphQLError } from "graphql";
 import jwt from "jsonwebtoken";
-import { UNAUTHENTICATED } from "../constants/statusMessages.js";
+import { INVALID_TOKEN } from "../constants/statusMessages.js";
 
 interface AuthSession {
   userId: string;
@@ -10,10 +10,9 @@ export const getUser = (auth: string): AuthSession => {
   const parts: string[] = auth.split(" ");
 
   if (parts.length !== 2) {
-    throw new GraphQLError("Invalid token", {
+    throw new GraphQLError(INVALID_TOKEN, {
       extensions: {
-        code: UNAUTHENTICATED,
-        http: { status: 401 },
+        code: INVALID_TOKEN,
       },
     });
   }
@@ -22,19 +21,17 @@ export const getUser = (auth: string): AuthSession => {
   const token: string = parts[1];
 
   if (bearer !== "Bearer") {
-    throw new GraphQLError("Invalid token", {
+    throw new GraphQLError(INVALID_TOKEN, {
       extensions: {
-        code: UNAUTHENTICATED,
-        http: { status: 401 },
+        code: INVALID_TOKEN,
       },
     });
   }
 
   if (!token) {
-    throw new GraphQLError("Invalid token", {
+    throw new GraphQLError(INVALID_TOKEN, {
       extensions: {
-        code: UNAUTHENTICATED,
-        http: { status: 401 },
+        code: INVALID_TOKEN,
       },
     });
   }
