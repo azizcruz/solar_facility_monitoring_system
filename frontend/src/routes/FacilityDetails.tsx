@@ -2,32 +2,40 @@ import { Add, ArrowBack } from "@mui/icons-material";
 import { Button, Divider, Grid, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import PVMetric from "../components/MyFacilities/PVMetric";
-import { client } from "../plugins/apolloClient";
-import { MY_FACILITIES } from "../graphql/queries/facilities";
 import UploadMetricsForm from "../components/MyFacilities/UploadMetricsForm";
 import { DialogContext } from "../context/dialog";
 import { useContext } from "react";
+import { useQuery } from "@apollo/client";
+import { GET_FACILITY } from "../graphql/queries/facilities";
+import LoadingView from "../components/Shared/LoadingView";
+import { handleGraphQLError } from "../utils.ts/handleGraphQLError";
 
 export default function FacilityDetails() {
   const { openDialog } = useContext(DialogContext);
   const navigate = useNavigate();
   const params = useParams();
-  const data = client.readQuery({
-    query: MY_FACILITIES,
+  const { data, loading } = useQuery(GET_FACILITY, {
     variables: {
-      id: params.id,
+      facilityId: params.id,
+    },
+    onError: (error) => {
+      openDialog(handleGraphQLError(error));
     },
   });
+
+  if (loading) {
+    return <LoadingView />;
+  }
 
   return (
     <>
       {BackButton(navigate)}
       <Divider sx={{ my: 2 }} />
-      {data.myFacilities.length ? (
+      {data?.facility?.pv_metrics.length === 0 ? (
         EmptyPVMetricsView(openDialog, params)
       ) : (
         <Grid container>
-          <PVMetric />
+          <PVMetric pvMetrics={data.facility.pv_metrics} />
         </Grid>
       )}
     </>

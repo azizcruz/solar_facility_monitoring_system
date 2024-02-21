@@ -1,12 +1,13 @@
 import { useQuery } from "@apollo/client";
 import { MY_FACILITIES } from "../graphql/queries/facilities";
-import { Button, CircularProgress, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import Facility from "../components/MyFacilities/Facility";
 import { Add } from "@mui/icons-material";
 import { DialogContext } from "../context/dialog";
 import { useContext } from "react";
 import CreateFacilityForm from "../components/MyFacilities/CreateEditFacilityForm";
 import { handleGraphQLError } from "../utils.ts/handleGraphQLError";
+import LoadingView from "../components/Shared/LoadingView";
 
 export interface FacilityType {
   _id: string;
@@ -32,22 +33,7 @@ export default function MyFacilities() {
   });
 
   if (loading) {
-    return (
-      <>
-        <Grid
-          container
-          alignItems={"center"}
-          spacing={2}
-          justifyContent={"center"}
-          direction={"column"}
-          height={"80vh"}
-        >
-          <Grid item>
-            <CircularProgress />
-          </Grid>
-        </Grid>
-      </>
-    );
+    return <LoadingView />;
   }
 
   if (data?.myFacilities.length === 0) {

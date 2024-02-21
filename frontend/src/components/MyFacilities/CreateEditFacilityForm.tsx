@@ -16,11 +16,12 @@ import { FacilityType } from "../../routes/myFacilities";
 interface Form {
   id?: string;
   name: string;
-  latitude: number | string;
-  longitude: number | string;
+  latitude: number;
+  longitude: number;
 }
 
 const createFormSchema = yup.object({
+  id: yup.string(),
   name: yup.string().required("Name is required"),
   latitude: yup
     .number()
@@ -63,13 +64,13 @@ export default function CreateFacilityForm({
     formState: { errors },
     reset,
   } = useForm({
-    resolver: yupResolver(createFormSchema),
+    resolver: yupResolver<Form>(createFormSchema),
     mode: "onBlur",
     defaultValues: {
       name: facility?.name || "",
       latitude: facility?.latitude || null,
       longitude: facility?.longitude || null,
-    },
+    } as Form,
   });
 
   const onCreateSubmit = (data: Form) => {

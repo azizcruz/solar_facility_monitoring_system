@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import { GET_FACILITY } from "../../graphql/queries/facilities";
 
 const uploadMetricsFormSchema = yup.object().shape({
   upload: yup
@@ -51,6 +52,7 @@ export default function UploadMetricsForm({ facilityId }: UploadMetricsProps) {
         facilityId,
         upload: data.upload,
       },
+      refetchQueries: [{ query: GET_FACILITY, variables: { facilityId } }],
     });
   };
 

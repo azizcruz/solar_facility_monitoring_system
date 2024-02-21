@@ -10,7 +10,7 @@ export default function ErrorPage() {
           display: "flex",
           flexDirection: "column",
           placeContent: "center",
-          height: "100vh",
+          height: "80vh",
         }}
       >
         <Typography variant="h1">Error</Typography>
