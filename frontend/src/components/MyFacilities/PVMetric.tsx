@@ -21,22 +21,26 @@ export default memo(function PVMetric({
   const chartContainer = useRef(null);
 
   useEffect(() => {
-    const debouncedHandleResize = debounce(() => {
-      const container = chartContainer.current;
-      if (container) {
-        setChartDimensions({
-          width: container.clientWidth,
-          height: container.clientHeight,
-        });
+    const handleResize = debounce((entries) => {
+      for (const entry of entries) {
+        const { width, height } = entry.contentRect;
+        setChartDimensions({ width, height });
       }
     }, 100);
 
-    window.addEventListener("resize", debouncedHandleResize);
+    const observer = new ResizeObserver((entries) => {
+      handleResize(entries);
+    });
 
-    debouncedHandleResize();
+    const container = chartContainer.current;
+    if (container) {
+      observer.observe(container);
+    }
 
     return () => {
-      window.removeEventListener("resize", debouncedHandleResize);
+      if (container) {
+        observer.unobserve(container);
+      }
     };
   }, []);
 
