@@ -17,6 +17,7 @@
     "@mui/icons-material": "^5.15.10",
     "@mui/material": "^5.15.10",
     "@mui/x-charts": "^6.19.4",
+    "apollo-upload-client": "^18.0.1",
     "graphql": "^16.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

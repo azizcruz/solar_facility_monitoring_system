@@ -5,6 +5,7 @@ import ErrorPage from "../routes/errorPage";
 import Root from "../routes/root";
 import MyFacilities from "../routes/myFacilities";
 import { ProtectedRoute } from "../components/protectedRoute";
+import FacilityDetails from "../routes/FacilityDetails";
 
 export const routes = createBrowserRouter([
   {
@@ -26,6 +27,12 @@ export const routes = createBrowserRouter([
         path: "",
         element: <MyFacilities />,
         errorElement: <ErrorPage />,
+      },
+      {
+        path: "facility-details/:id",
+        element: <ProtectedRoute element={<FacilityDetails />} />,
+        errorElement: <ErrorPage />,
+        id: "facility-details",
       },
     ],
   },

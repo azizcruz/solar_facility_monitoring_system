@@ -63,12 +63,12 @@ export default function CreateFacilityForm({
     formState: { errors },
     reset,
   } = useForm({
-    resolver: yupResolver<Form>(createFormSchema),
+    resolver: yupResolver(createFormSchema),
     mode: "onBlur",
     defaultValues: {
       name: facility?.name || "",
-      latitude: facility?.latitude || "",
-      longitude: facility?.longitude || "",
+      latitude: facility?.latitude || null,
+      longitude: facility?.longitude || null,
     },
   });
 
@@ -120,6 +120,7 @@ export default function CreateFacilityForm({
           label="Latitude"
           type="number"
           id="latitude"
+          inputProps={{ step: "any" }}
           {...register("latitude")}
           error={!!errors.latitude}
           helperText={errors.latitude?.message as string}
@@ -131,6 +132,7 @@ export default function CreateFacilityForm({
           label="Longitude"
           type="number"
           id="longitude"
+          inputProps={{ step: "any" }}
           {...register("longitude")}
           error={!!errors.latitude}
           helperText={errors.latitude?.message as string}

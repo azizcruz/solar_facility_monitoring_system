@@ -13,6 +13,7 @@ import { useMutation } from "@apollo/client";
 import { DELETE_FACILITY } from "../../graphql/mutations/facilities";
 import { MY_FACILITIES } from "../../graphql/queries/facilities";
 import CreateEditFacilityForm from "./CreateEditFacilityForm";
+import { useNavigate } from "react-router-dom";
 
 interface FacilityProps {
   facility: {
@@ -26,6 +27,7 @@ interface FacilityProps {
 export default function Facility({ facility }: FacilityProps) {
   const { openConfirmDialog, openDialog } = useContext(DialogContext);
   const [deleteFacility] = useMutation(DELETE_FACILITY);
+  const navigate = useNavigate();
 
   const handleDelete = () => {
     openConfirmDialog(
@@ -64,7 +66,14 @@ export default function Facility({ facility }: FacilityProps) {
           <Typography sx={{ fontSize: 24 }}>{facility.longitude}</Typography>
         </CardContent>
         <CardActions sx={{ justifyContent: "space-between", height: "100%" }}>
-          <Button size="small">Learn More</Button>
+          <Button
+            size="small"
+            onClick={() =>
+              navigate(`/dashboard/facility-details/${facility._id}`)
+            }
+          >
+            Learn More
+          </Button>
           <Box>
             <Button size="small" onClick={handleEdit}>
               <Edit />

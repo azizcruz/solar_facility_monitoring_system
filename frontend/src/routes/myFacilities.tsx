@@ -51,33 +51,7 @@ export default function MyFacilities() {
   }
 
   if (data?.myFacilities.length === 0) {
-    return (
-      <>
-        <Grid
-          container
-          alignItems={"center"}
-          spacing={2}
-          justifyContent={"center"}
-          direction={"column"}
-          height={"80vh"}
-        >
-          <Grid item>
-            <Typography variant="h4">No facilities found</Typography>
-          </Grid>
-          <Grid item>
-            <Button
-              variant="contained"
-              size="large"
-              onClick={() => {
-                openDialog(<CreateFacilityForm />);
-              }}
-            >
-              Add <Add />
-            </Button>
-          </Grid>
-        </Grid>
-      </>
-    );
+    return <>{EmptyMyFacilitiesView(openDialog)}</>;
   }
 
   return (
@@ -100,5 +74,33 @@ export default function MyFacilities() {
         </Button>
       </Grid>
     </>
+  );
+}
+
+function EmptyMyFacilitiesView(openDialog: (content: JSX.Element) => void) {
+  return (
+    <Grid
+      container
+      alignItems={"center"}
+      spacing={2}
+      justifyContent={"center"}
+      direction={"column"}
+      height={"80vh"}
+    >
+      <Grid item>
+        <Typography variant="h4">No facilities found</Typography>
+      </Grid>
+      <Grid item>
+        <Button
+          variant="contained"
+          size="large"
+          onClick={() => {
+            openDialog(<CreateFacilityForm />);
+          }}
+        >
+          Add <Add />
+        </Button>
+      </Grid>
+    </Grid>
   );
 }

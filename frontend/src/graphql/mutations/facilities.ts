@@ -29,3 +29,15 @@ export const DELETE_FACILITY = gql`
     }
   }
 `;
+
+export const UPLOAD_FACILITY_PVMETRICS = gql`
+  mutation ($facilityId: ID!, $upload: Upload!) {
+    uploadPVMetricsToFacility(facilityId: $facilityId, upload: $upload) {
+      pv_metrics {
+        activePowerKW
+        energyKWh
+        timestamp
+      }
+    }
+  }
+`;
