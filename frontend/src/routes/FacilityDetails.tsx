@@ -82,6 +82,7 @@ export default function FacilityDetails() {
             variant="contained"
             onClick={() => makeChunks(data.facility.pv_metrics)}
             size="small"
+            disabled={data.facility.pv_metrics.length === 0}
           >
             Zoom In
           </Button>
@@ -90,6 +91,7 @@ export default function FacilityDetails() {
             variant="contained"
             onClick={() => setChunkedData([])}
             size="small"
+            disabled={data.facility.pv_metrics.length === 0}
           >
             Zoom out
           </Button>
