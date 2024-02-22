@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-
 export const AuthContext = createContext<{
   token: string | null;
   login: (token: string) => void;

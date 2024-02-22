@@ -16,11 +16,11 @@ import * as yup from "yup";
 import { useMutation } from "@apollo/client";
 import { LOGIN, REGISTER } from "../graphql/mutations/user";
 import { useAuth } from "../hook/useAuth";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { DialogContext } from "../context/dialog";
 import { CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { handleGraphQLError } from "../utils.ts/handleGraphQLError";
+import { useErrorHandler } from "../hook/useErrorHandler";
 
 type Form = {
   email: string;
@@ -38,7 +38,12 @@ const formSchema = yup
 function SignUp() {
   const { login, token } = useAuth();
   const { openDialog } = useContext(DialogContext);
+  const { handleGraphQLError } = useErrorHandler();
   const navigate = useNavigate();
+  const memoizedNavigate = useCallback(
+    () => navigate("/dashboard", { replace: true }),
+    [navigate]
+  );
   const {
     register,
     handleSubmit,
@@ -53,7 +58,6 @@ function SignUp() {
     onCompleted: (data) => {
       login(data.createUser.token);
       reset();
-      navigate("/dashboard", { replace: true });
     },
     onError: (error) => {
       openDialog(handleGraphQLError(error));
@@ -70,9 +74,9 @@ function SignUp() {
 
   useEffect(() => {
     if (token) {
-      navigate("/dashboard", { replace: true });
+      memoizedNavigate;
     }
-  });
+  }, [token, memoizedNavigate]);
 
   if (loading) return <CircularProgress color="secondary" />;
 
@@ -125,7 +129,13 @@ function SignUp() {
 function SignIn() {
   const { login, token } = useAuth();
   const { openDialog } = useContext(DialogContext);
+  const { handleGraphQLError } = useErrorHandler();
+
   const navigate = useNavigate();
+  const memoizedNavigate = useCallback(
+    () => navigate("/dashboard", { replace: true }),
+    [navigate]
+  );
   const {
     register,
     handleSubmit,
@@ -140,7 +150,6 @@ function SignIn() {
     onCompleted: (data) => {
       login(data.userLogin.token);
       reset();
-      navigate("/dashboard", { replace: true });
     },
     onError: (error) => {
       openDialog(handleGraphQLError(error));
@@ -157,9 +166,9 @@ function SignIn() {
 
   useEffect(() => {
     if (token) {
-      navigate("/dashboard", { replace: true });
+      memoizedNavigate();
     }
-  });
+  }, [token, memoizedNavigate]);
 
   if (loading) return <CircularProgress color="primary" />;
 

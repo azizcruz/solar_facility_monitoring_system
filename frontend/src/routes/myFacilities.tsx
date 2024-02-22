@@ -6,8 +6,8 @@ import { Add } from "@mui/icons-material";
 import { DialogContext } from "../context/dialog";
 import { useContext } from "react";
 import CreateFacilityForm from "../components/MyFacilities/CreateEditFacilityForm";
-import { handleGraphQLError } from "../utils.ts/handleGraphQLError";
 import LoadingView from "../components/Shared/LoadingView";
+import { useErrorHandler } from "../hook/useErrorHandler";
 
 export interface FacilityType {
   _id: string;
@@ -18,9 +18,11 @@ export interface FacilityType {
 
 export default function MyFacilities() {
   const { openDialog } = useContext(DialogContext);
+  const { handleGraphQLError } = useErrorHandler();
   const { data, loading } = useQuery(MY_FACILITIES, {
     onError: (error) => {
-      openDialog(handleGraphQLError(error));
+      const message = handleGraphQLError(error);
+      openDialog(message);
     },
   });
 

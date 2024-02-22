@@ -8,11 +8,12 @@ import { useContext } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_FACILITY } from "../graphql/queries/facilities";
 import LoadingView from "../components/Shared/LoadingView";
-import { handleGraphQLError } from "../utils.ts/handleGraphQLError";
+import { useErrorHandler } from "../hook/useErrorHandler";
 
 export default function FacilityDetails() {
   const { openDialog } = useContext(DialogContext);
   const navigate = useNavigate();
+  const { handleGraphQLError } = useErrorHandler();
   const params = useParams();
   const { data, loading } = useQuery(GET_FACILITY, {
     variables: {

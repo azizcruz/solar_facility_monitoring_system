@@ -16,7 +16,7 @@ export function ProtectedRoute({
     if (!token) {
       navigate("/auth", { replace: true });
     }
-  });
+  }, [token, navigate]);
 
   return element || children;
 }

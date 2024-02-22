@@ -9,9 +9,9 @@ import {
   UPDATE_FACILITY,
 } from "../../graphql/mutations/facilities";
 import { useMutation } from "@apollo/client";
-import { handleGraphQLError } from "../../utils.ts/handleGraphQLError";
 import { MY_FACILITIES } from "../../graphql/queries/facilities";
 import { FacilityType } from "../../routes/myFacilities";
+import { useErrorHandler } from "../../hook/useErrorHandler";
 
 interface Form {
   id?: string;
@@ -39,6 +39,7 @@ export default function CreateFacilityForm({
   facility?: FacilityType;
 }) {
   const { closeDialog, openDialog } = useContext(DialogContext);
+  const { handleGraphQLError } = useErrorHandler();
   const [createFacility] = useMutation(CREATE_FACILITY, {
     onCompleted: () => {
       closeDialog();

@@ -53,13 +53,12 @@ export default function Facility({ facility }: FacilityProps) {
             flexDirection: "column",
             placeItems: "center",
             placeContent: "center",
-            aspectRatio: "2/1",
           }}
         >
-          <Typography sx={{ fontSize: 24 }} color="text.secondary" gutterBottom>
+          <Typography sx={{ fontSize: 28 }} variant="h3">
             {facility.name}
           </Typography>
-          <Box sx={{ my: 4 }}></Box>
+          <Box sx={{ my: 2 }}></Box>
           <Typography>Latitude</Typography>
           <Typography sx={{ fontSize: 24 }}>{facility.latitude}</Typography>
           <Typography>Longtitude</Typography>
