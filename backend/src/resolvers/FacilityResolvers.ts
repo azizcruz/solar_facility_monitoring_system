@@ -48,7 +48,6 @@ const facilityResolvers = {
 
   Mutation: {
     createFacility: async (_, args, context): Promise<FacilityDocument> => {
-      console.log(context);
       const createFacilityInputSchema = z.object({
         name: z.string(),
         latitude: z.number(),

@@ -16,11 +16,9 @@ export function checkAuthToken() {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
       } catch (error) {
-        // Handle the error according to your needs
         throw new GraphQLError("Invalid token", {
           extensions: {
             code: UNAUTHENTICATED,
-            http: { status: 401 },
           },
         });
       }
@@ -28,7 +26,6 @@ export function checkAuthToken() {
       throw new GraphQLError("Authentication token is missing", {
         extensions: {
           code: UNAUTHENTICATED,
-          http: { status: 401 },
         },
       });
     }

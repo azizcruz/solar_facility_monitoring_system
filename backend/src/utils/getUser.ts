@@ -20,15 +20,7 @@ export const getUser = (auth: string): AuthSession => {
   const bearer: string = parts[0];
   const token: string = parts[1];
 
-  if (bearer !== "Bearer") {
-    throw new GraphQLError(INVALID_TOKEN, {
-      extensions: {
-        code: INVALID_TOKEN,
-      },
-    });
-  }
-
-  if (!token) {
+  if (bearer !== "Bearer" || !token) {
     throw new GraphQLError(INVALID_TOKEN, {
       extensions: {
         code: INVALID_TOKEN,
@@ -47,7 +39,6 @@ export const getUser = (auth: string): AuthSession => {
     process.env.JWT_SECRET as string
   );
 
-  // check if expired or invalid and return false
   if (decoded.exp < Date.now() / 1000 || !decoded) {
     return null;
   }

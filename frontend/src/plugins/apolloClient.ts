@@ -15,6 +15,9 @@ const httpLink = new HttpLink({
 const uploadLink = createUploadLink({
   uri: "http://localhost:4000/graphql",
   credentials: "same-origin",
+  headers: {
+    "apollo-require-preflight": "true",
+  },
 });
 
 const setAuthorizationLink = setContext((request) => ({

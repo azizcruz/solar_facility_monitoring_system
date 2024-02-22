@@ -21,7 +21,6 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-  csrfPrevention: false,
 });
 
 await server.start();

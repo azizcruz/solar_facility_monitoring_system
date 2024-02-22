@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { PvMetric } from "./pvmetrics.js";
 
 export interface FacilityDocument extends mongoose.Document {
   _id: mongoose.Types.ObjectId;
@@ -38,6 +39,12 @@ const facilitySchema = new Schema(
     timestamps: true,
   }
 );
+
+facilitySchema.pre("deleteOne", async function (next) {
+  const facility: any = this;
+  await PvMetric.deleteMany({ facility: facility._id.toString() });
+  next();
+});
 
 export const Facility = mongoose.model<FacilityDocument>(
   "Facility",
