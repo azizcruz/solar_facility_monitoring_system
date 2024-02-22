@@ -8,7 +8,7 @@ import {
 } from "../../graphql/mutations/facilities";
 import { useMutation } from "@apollo/client";
 import { MY_FACILITIES } from "../../graphql/queries/facilities";
-import { FacilityType } from "../../routes/myFacilities";
+import { FacilityType } from "../../routes/MyFacilities";
 import { useErrorHandler } from "../../hook/useErrorHandler";
 import { useDialog } from "../../hook/useDialog";
 

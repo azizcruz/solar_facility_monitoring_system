@@ -1,11 +1,11 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
-// import Root from "../routes/root";
-import Auth from "../routes/auth";
-import ErrorPage from "../routes/errorPage";
-import Root from "../routes/root";
-import MyFacilities from "../routes/myFacilities";
-import { ProtectedRoute } from "../components/protectedRoute";
+
 import FacilityDetails from "../routes/FacilityDetails";
+import ProtectedRoute from "../components/ProtectedRoute";
+import Auth from "../routes/Auth";
+import ErrorPage from "../routes/ErrorPage";
+import Root from "../routes/Root";
+import MyFacilities from "../routes/MyFacilities";
 
 export const routes = createBrowserRouter([
   {

@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, debounce } from "@mui/material";
+import { Box, Card, CardContent, Typography, debounce } from "@mui/material";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { useEffect, useRef, useState, memo, useMemo } from "react";
 
@@ -44,34 +44,32 @@ export default memo(function PVMetric({
     };
   }, []);
 
-  const data = useMemo(
-    () =>
-      pvMetrics.map((metric) => ({
-        timestamp: new Date(parseInt(metric.timestamp)).toLocaleString(
-          "default",
-          {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-          }
-        ),
-        activePowerKW: metric.activePowerKW,
-        energyKWh: metric.energyKWh,
-      })),
-    [pvMetrics]
-  );
+  const data: {
+    timestamp: string[];
+    activePowerKW: number[];
+    energyKWh: number[];
+  } = useMemo(() => {
+    const timestamp = [];
+    const activePowerKW = [];
+    const energyKWh = [];
+    pvMetrics.forEach((metric) => {
+      timestamp.push(
+        new Date(parseInt(metric.timestamp)).toLocaleString("default", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+        })
+      );
+      activePowerKW.push(metric.activePowerKW);
+      energyKWh.push(metric.energyKWh);
+    });
+    return { timestamp, activePowerKW, energyKWh };
+  }, [pvMetrics]);
 
-  const dates = useMemo(() => data.map((metric) => metric.timestamp), [data]);
-  const activePowerKW = useMemo(
-    () => data.map((metric) => metric.activePowerKW),
-    [data]
-  );
-  const energyKWh = useMemo(
-    () => data.map((metric) => metric.energyKWh),
-    [data]
-  );
+  const timestampFrom = data.timestamp[0].replace("\n", "");
+  const timestampTo = data.timestamp.at(-1).replace("\n", "");
 
   return (
     <Box
@@ -86,26 +84,39 @@ export default memo(function PVMetric({
         <CardContent
           sx={{
             display: "flex",
+            flexDirection: "column",
+            placeItems: "center",
             width: "100%",
             height: "100%",
           }}
         >
+          <Typography sx={{ fontSize: { xs: 12, sm: 14, fontWeight: "bold" } }}>
+            {timestampFrom}
+
+            <Typography
+              component="span"
+              sx={{ fontWeight: "bold", fontSize: { xs: 12, sm: 14 }, mx: 1 }}
+            >
+              to
+            </Typography>
+            {timestampTo}
+          </Typography>
           <LineChart
             width={chartDimensions.width}
             height={chartDimensions.height}
             series={[
               {
-                data: activePowerKW,
+                data: data.activePowerKW,
                 label: "Real-time Power Output (kW)",
                 yAxisKey: "leftAxisId",
               },
               {
-                data: energyKWh,
+                data: data.energyKWh,
                 label: "Total Power Generated (kWh)",
                 yAxisKey: "rightAxisId",
               },
             ]}
-            xAxis={[{ scaleType: "point", data: dates }]}
+            xAxis={[{ scaleType: "point", data: data.timestamp }]}
             yAxis={[{ id: "leftAxisId" }, { id: "rightAxisId" }]}
             rightAxis="rightAxisId"
           />

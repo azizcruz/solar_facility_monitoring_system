@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useAuth } from "../hook/useAuth";
 import { useNavigate } from "react-router-dom";
 
-export function ProtectedRoute({
+export default function ProtectedRoute({
   element,
   children,
 }: {
