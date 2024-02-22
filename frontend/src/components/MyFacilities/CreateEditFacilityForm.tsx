@@ -1,9 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { DialogContext } from "../../context/dialog";
 import {
   CREATE_FACILITY,
   UPDATE_FACILITY,
@@ -12,6 +10,7 @@ import { useMutation } from "@apollo/client";
 import { MY_FACILITIES } from "../../graphql/queries/facilities";
 import { FacilityType } from "../../routes/myFacilities";
 import { useErrorHandler } from "../../hook/useErrorHandler";
+import { useDialog } from "../../hook/useDialog";
 
 interface Form {
   id?: string;
@@ -38,14 +37,15 @@ export default function CreateFacilityForm({
 }: {
   facility?: FacilityType;
 }) {
-  const { closeDialog, openDialog } = useContext(DialogContext);
+  const { closeDialog, openDialog } = useDialog();
   const { handleGraphQLError } = useErrorHandler();
   const [createFacility] = useMutation(CREATE_FACILITY, {
     onCompleted: () => {
       closeDialog();
     },
     onError: (error) => {
-      openDialog(handleGraphQLError(error));
+      const message = handleGraphQLError(error);
+      openDialog(<Typography>{message}</Typography>);
     },
   });
 
@@ -54,7 +54,8 @@ export default function CreateFacilityForm({
       closeDialog();
     },
     onError: (error) => {
-      openDialog(handleGraphQLError(error));
+      const message = handleGraphQLError(error);
+      openDialog(message);
     },
   });
 

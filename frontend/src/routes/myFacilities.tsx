@@ -3,11 +3,10 @@ import { MY_FACILITIES } from "../graphql/queries/facilities";
 import { Button, Grid, Typography } from "@mui/material";
 import Facility from "../components/MyFacilities/Facility";
 import { Add } from "@mui/icons-material";
-import { DialogContext } from "../context/dialog";
-import { useContext } from "react";
 import CreateFacilityForm from "../components/MyFacilities/CreateEditFacilityForm";
 import LoadingView from "../components/Shared/LoadingView";
 import { useErrorHandler } from "../hook/useErrorHandler";
+import { useDialog } from "../hook/useDialog";
 
 export interface FacilityType {
   _id: string;
@@ -17,7 +16,7 @@ export interface FacilityType {
 }
 
 export default function MyFacilities() {
-  const { openDialog } = useContext(DialogContext);
+  const { openDialog } = useDialog();
   const { handleGraphQLError } = useErrorHandler();
   const { data, loading } = useQuery(MY_FACILITIES, {
     onError: (error) => {

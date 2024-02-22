@@ -3,15 +3,15 @@ import { Button, Divider, Grid, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import PVMetric from "../components/MyFacilities/PVMetric";
 import UploadMetricsForm from "../components/MyFacilities/UploadMetricsForm";
-import { DialogContext } from "../context/dialog";
-import { useContext } from "react";
+
 import { useQuery } from "@apollo/client";
 import { GET_FACILITY } from "../graphql/queries/facilities";
 import LoadingView from "../components/Shared/LoadingView";
 import { useErrorHandler } from "../hook/useErrorHandler";
+import { useDialog } from "../hook/useDialog";
 
 export default function FacilityDetails() {
-  const { openDialog } = useContext(DialogContext);
+  const { openDialog } = useDialog();
   const navigate = useNavigate();
   const { handleGraphQLError } = useErrorHandler();
   const params = useParams();
@@ -20,7 +20,8 @@ export default function FacilityDetails() {
       facilityId: params.id,
     },
     onError: (error) => {
-      openDialog(handleGraphQLError(error));
+      const message = handleGraphQLError(error);
+      openDialog(message);
     },
   });
 

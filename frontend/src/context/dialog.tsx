@@ -1,11 +1,18 @@
-import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
-import { createContext, useContext, useRef, useState } from "react";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Typography,
+} from "@mui/material";
+import { createContext, useRef, useState } from "react";
+import { useDialog } from "../hook/useDialog";
 
 export const DialogContext = createContext<{
   isOpen: boolean;
   isConfirmOpen: boolean;
   openConfirmDialog: (content: JSX.Element, cb: () => void) => void;
-  openDialog: (content: JSX.Element) => void;
+  openDialog: (content: JSX.Element | string) => void;
   closeDialog: () => void;
   closeConfirmDialog: () => void;
   confirmAndClose: () => void;
@@ -67,7 +74,7 @@ export function CustomDialog() {
     dialogContent,
     closeDialog,
     confirmAndClose,
-  } = useContext(DialogContext);
+  } = useDialog();
 
   return (
     <>
@@ -78,7 +85,14 @@ export function CustomDialog() {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogContent>{dialogContent}</DialogContent>
+          <DialogContent>
+            {typeof dialogContent === "string" ? (
+              <Typography variant="h5">{dialogContent}</Typography>
+            ) : (
+              <DialogContent>{dialogContent}</DialogContent>
+            )}
+          </DialogContent>
+
           <DialogActions>
             <Button onClick={closeDialog}>Close</Button>
           </DialogActions>

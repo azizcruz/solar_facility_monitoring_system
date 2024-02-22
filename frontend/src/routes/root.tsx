@@ -18,7 +18,7 @@ import { Logout } from "@mui/icons-material";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/auth";
 import Logo from "../components/Logo";
-import { DialogContext } from "../context/dialog";
+import { useDialog } from "../hook/useDialog";
 
 const drawerWidth: number = 240;
 
@@ -75,7 +75,7 @@ const defaultTheme = createTheme();
 
 export default function Root() {
   const { logout } = useContext(AuthContext);
-  const { openConfirmDialog } = useContext(DialogContext);
+  const { openConfirmDialog } = useDialog();
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {

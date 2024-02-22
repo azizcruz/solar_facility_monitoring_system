@@ -16,11 +16,11 @@ import * as yup from "yup";
 import { useMutation } from "@apollo/client";
 import { LOGIN, REGISTER } from "../graphql/mutations/user";
 import { useAuth } from "../hook/useAuth";
-import { useCallback, useContext, useEffect, useState } from "react";
-import { DialogContext } from "../context/dialog";
+import { useCallback, useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useErrorHandler } from "../hook/useErrorHandler";
+import { useDialog } from "../hook/useDialog";
 
 type Form = {
   email: string;
@@ -37,7 +37,7 @@ const formSchema = yup
 
 function SignUp() {
   const { login, token } = useAuth();
-  const { openDialog } = useContext(DialogContext);
+  const { openDialog } = useDialog();
   const { handleGraphQLError } = useErrorHandler();
   const navigate = useNavigate();
   const memoizedNavigate = useCallback(
@@ -60,7 +60,8 @@ function SignUp() {
       reset();
     },
     onError: (error) => {
-      openDialog(handleGraphQLError(error));
+      const message = handleGraphQLError(error);
+      openDialog(<Typography>{message}</Typography>);
     },
   });
 
@@ -128,7 +129,7 @@ function SignUp() {
 
 function SignIn() {
   const { login, token } = useAuth();
-  const { openDialog } = useContext(DialogContext);
+  const { openDialog } = useDialog();
   const { handleGraphQLError } = useErrorHandler();
 
   const navigate = useNavigate();
@@ -152,7 +153,8 @@ function SignIn() {
       reset();
     },
     onError: (error) => {
-      openDialog(handleGraphQLError(error));
+      const message = handleGraphQLError(error);
+      openDialog(message);
     },
   });
 

@@ -7,13 +7,13 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import { useContext } from "react";
-import { DialogContext } from "../../context/dialog";
+
 import { useMutation } from "@apollo/client";
 import { DELETE_FACILITY } from "../../graphql/mutations/facilities";
 import { MY_FACILITIES } from "../../graphql/queries/facilities";
 import CreateEditFacilityForm from "./CreateEditFacilityForm";
 import { useNavigate } from "react-router-dom";
+import { useDialog } from "../../hook/useDialog";
 
 interface FacilityProps {
   facility: {
@@ -25,7 +25,7 @@ interface FacilityProps {
 }
 
 export default function Facility({ facility }: FacilityProps) {
-  const { openConfirmDialog, openDialog } = useContext(DialogContext);
+  const { openConfirmDialog, openDialog } = useDialog();
   const [deleteFacility] = useMutation(DELETE_FACILITY);
   const navigate = useNavigate();
 

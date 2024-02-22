@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { DialogContext } from "../../context/dialog";
 import { useMutation } from "@apollo/client";
 import { UPLOAD_FACILITY_PVMETRICS } from "../../graphql/mutations/facilities";
 import { useForm } from "react-hook-form";
@@ -8,6 +6,7 @@ import * as yup from "yup";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { GET_FACILITY } from "../../graphql/queries/facilities";
 import { useErrorHandler } from "../../hook/useErrorHandler";
+import { useDialog } from "../../hook/useDialog";
 
 const uploadMetricsFormSchema = yup.object().shape({
   upload: yup
@@ -28,14 +27,15 @@ interface UploadMetricsProps {
 }
 
 export default function UploadMetricsForm({ facilityId }: UploadMetricsProps) {
-  const { openDialog, closeDialog } = useContext(DialogContext);
+  const { openDialog, closeDialog } = useDialog();
   const { handleGraphQLError } = useErrorHandler();
   const [uploadPVMetrics] = useMutation(UPLOAD_FACILITY_PVMETRICS, {
     onCompleted: () => {
       closeDialog();
     },
     onError: (error) => {
-      openDialog(handleGraphQLError(error));
+      const message = handleGraphQLError(error);
+      openDialog(message);
     },
   });
   const {
