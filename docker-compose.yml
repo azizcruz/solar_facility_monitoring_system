@@ -4,19 +4,36 @@ services:
   frontend:
     build:
       context: ./frontend
+    restart: always
     depends_on:
       - backend
     networks:
       - app-network
+    env_file:
+      - ./frontend/.env
+    environment:
+      - ENV=docker
+    ports:
+      - "4173:4173"
 
   backend:
     build:
       context: ./backend
+    restart: always
+    env_file:
+      - ./backend/.env
+    environment:
+      - ENV=docker
     networks:
       - app-network
+    depends_on:
+      - mongodb
+    ports:
+      - "4000:4000"
+
 
   mongodb:
-    image: mongo:7-alpine
+    image: mongo:7.0
     volumes:
       - db-data:/data/db
     networks:

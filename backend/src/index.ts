@@ -25,14 +25,16 @@ const server = new ApolloServer({
 
 await server.start();
 
+// const ALLOWED_ORIGINS = ["http://localhost:5173", "http://localhost:4173"];
+
+// if (process.env.ENV === "docker") {
+//   ALLOWED_ORIGINS.push("http://frontend:4173");
+// }
+
 app.use(
   "/",
   cors<cors.CorsRequest>({
-    origin: [
-      "http://localhost:4000",
-      "http://localhost:5173",
-      "http://localhost:4173",
-    ],
+    origin: "*",
     credentials: true,
   }),
   bodyParser.json(),
