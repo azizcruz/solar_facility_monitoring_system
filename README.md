@@ -29,5 +29,9 @@ Then navigate to
 http://localhost:4173
 ```
 
+## Important
+
+You have to wait until the backend is ready before starting using the app.
+
 
 
