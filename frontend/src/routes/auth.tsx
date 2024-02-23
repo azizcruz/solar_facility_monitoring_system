@@ -75,7 +75,7 @@ function SignUp() {
 
   useEffect(() => {
     if (token) {
-      memoizedNavigate;
+      memoizedNavigate();
     }
   }, [token, memoizedNavigate]);
 
@@ -120,7 +120,7 @@ function SignUp() {
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
         >
-          Sign In
+          Sign Up
         </Button>
       </Box>
     </>
@@ -247,7 +247,7 @@ export default function Auth() {
                 variant="body2"
                 onClick={() => setAuthType("register")}
               >
-                {"Don't have an account? Sign Up"}
+                {"Don't have an account? Sign up"}
               </Link>
             ) : (
               <Link

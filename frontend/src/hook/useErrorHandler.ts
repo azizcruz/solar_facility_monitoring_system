@@ -12,7 +12,9 @@ export const useErrorHandler = () => {
   function handleGraphQLError(error): string {
     const extractedError = JSON.parse(JSON.stringify(error));
     if (extractedError.networkError) {
-      const message = error.networkError.result.errors[0].message;
+      const message =
+        error?.networkError?.result?.errors[0]?.message ||
+        "Something went wrong";
       const forceLogoutMssage = checkForceLogoutMessage(message);
       if (forceLogoutMssage) {
         return forceLogoutMssage;
@@ -20,7 +22,8 @@ export const useErrorHandler = () => {
       return message;
     }
     if (extractedError.graphQLErrors) {
-      const message = error.graphQLErrors[0].message;
+      const message =
+        error?.graphQLErrors[0]?.message || "Something went wrong";
       const forceLogoutMssage = checkForceLogoutMessage(message);
       if (forceLogoutMssage) {
         return forceLogoutMssage;
