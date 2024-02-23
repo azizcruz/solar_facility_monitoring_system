@@ -157,11 +157,10 @@ const facilityResolvers = {
         _id: facilityId,
       });
 
-      if (!fascility?.user || fascility?.user != context.userId) {
+      if (!fascility?.user || fascility?.user.toString() !== context.userId) {
         throw new GraphQLError(FORBIDDEN, {
           extensions: {
             code: FORBIDDEN,
-            http: { status: 403 },
           },
         });
       }

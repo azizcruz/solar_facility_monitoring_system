@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { client } from "../plugins/apolloClient";
 export const AuthContext = createContext<{
   token: string | null;
   login: (token: string) => void;
@@ -22,6 +23,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("token");
+    client.clearStore();
     setToken(null);
   };
 

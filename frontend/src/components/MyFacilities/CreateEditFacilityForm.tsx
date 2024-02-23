@@ -19,8 +19,8 @@ interface Form {
   longitude: number;
 }
 
-const createFormSchema = yup.object({
-  id: yup.string(),
+const createUpdateFormSchema = yup.object({
+  id: yup.string().optional(),
   name: yup.string().required("Name is required"),
   latitude: yup
     .number()
@@ -62,11 +62,10 @@ export default function CreateFacilityForm({
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
     reset,
   } = useForm({
-    resolver: yupResolver<Form>(createFormSchema),
+    resolver: yupResolver<Form>(createUpdateFormSchema),
     mode: "onBlur",
     defaultValues: {
       name: facility?.name || "",
@@ -86,7 +85,6 @@ export default function CreateFacilityForm({
   };
 
   const onEditSubmit = (data: Form) => {
-    setValue("id", facility?._id);
     updateFacility({
       variables: {
         input: data,
@@ -105,6 +103,15 @@ export default function CreateFacilityForm({
         component="form"
         onSubmit={handleSubmit(facility ? onEditSubmit : onCreateSubmit)}
       >
+        {facility && (
+          <input
+            type="hidden"
+            id="id"
+            name="id"
+            value={facility._id}
+            {...register("id")}
+          />
+        )}
         <TextField
           margin="normal"
           required

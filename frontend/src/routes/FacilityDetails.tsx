@@ -1,4 +1,4 @@
-import { Add, ArrowBack } from "@mui/icons-material";
+import { Add } from "@mui/icons-material";
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import PVMetric from "../components/MyFacilities/PVMetric";
@@ -11,6 +11,7 @@ import { useErrorHandler } from "../hook/useErrorHandler";
 import { useDialog } from "../hook/useDialog";
 import { chunk } from "lodash";
 import { useEffect, useState } from "react";
+import { BackButton } from "../components/Shared/BackButton";
 
 export default function FacilityDetails() {
   const { openDialog } = useDialog();
@@ -141,18 +142,5 @@ function EmptyPVMetricsView(
         </Button>
       </Grid>
     </Grid>
-  );
-}
-
-// TODO: this should be a component
-function BackButton({ navigate }) {
-  return (
-    <>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Button onClick={() => navigate(-1)}>
-          <ArrowBack />
-        </Button>
-      </Box>
-    </>
   );
 }

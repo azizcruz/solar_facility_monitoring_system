@@ -14,7 +14,7 @@ const uploadMetricsFormSchema = yup.object().shape({
     .test(
       "is-csv",
       "File must be a CSV",
-      (value) => value && value[0].type === "text/csv"
+      (value) => value && value[0]?.type === "text/csv"
     ),
 });
 
@@ -29,6 +29,7 @@ interface UploadMetricsProps {
 export default function UploadMetricsForm({ facilityId }: UploadMetricsProps) {
   const { openDialog, closeDialog } = useDialog();
   const { handleGraphQLError } = useErrorHandler();
+
   const [uploadPVMetrics] = useMutation(UPLOAD_FACILITY_PVMETRICS, {
     onCompleted: () => {
       closeDialog();

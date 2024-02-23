@@ -40,11 +40,15 @@ const facilitySchema = new Schema(
   }
 );
 
-facilitySchema.pre("deleteOne", async function (next) {
-  const facility: any = this;
-  await PvMetric.deleteMany({ facility: facility._id.toString() });
-  next();
-});
+facilitySchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function (next) {
+    const facility: any = this;
+    await PvMetric.deleteMany({ facility: facility._id });
+    next();
+  }
+);
 
 export const Facility = mongoose.model<FacilityDocument>(
   "Facility",
