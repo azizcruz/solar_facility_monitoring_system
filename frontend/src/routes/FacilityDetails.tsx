@@ -52,10 +52,17 @@ export default function FacilityDetails() {
           display: "flex",
           justifyContent: "space-between",
           placeItems: "center",
+          placeContent: "center",
         }}
       >
         <BackButton navigate={navigate} />
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 1,
+          }}
+        >
           {chunkedData?.length > 0 &&
             chunkedData.map((_chunk, index) => {
               return (
